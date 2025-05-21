@@ -17,7 +17,7 @@
 </script>
 
 <section class="card bg-base-100 col-span-3 rounded-xl p-4 shadow-md">
-	<h2 class="mb-4 px-2 text-xl font-semibold">Stars</h2>
+	<h2 class="mb-4 px-2 text-xl font-semibold">Stars ⭐</h2>
 
 	<div id="stars" class="flex flex-col gap-3">
 		{#each stars as star}

@@ -24,7 +24,7 @@
 				/>
 			</svg>
 		</a>
-		<h1 class="text-3xl font-bold">GitOrb</h1>
+		<h1 class="text-3xl font-bold">GitOrb 🔮</h1>
 	</div>
 	<div class="me-2 flex items-center gap-4">
 		<ThemeSelector />
