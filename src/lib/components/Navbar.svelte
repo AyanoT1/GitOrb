@@ -36,6 +36,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<ul
 				tabindex="0"
 				class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-32 p-2 shadow-sm"
