@@ -25,5 +25,10 @@ export async function load({ cookies }) {
 	}
 	const repos = await reposRes.json();
 
-	return { user, repos };
+	// Fetch stars
+	const starredRes = await fetch('https://api.github.com/user/starred', { headers });
+	if (!starredRes.ok) throw new Error('Failed to fetch starred repositories');
+	const stars = await starredRes.json();
+	
+	return { user, repos, stars };
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { formatDate } from "$lib/utils";
+
 	interface Repo {
 		name: string;
 		owner: {
@@ -19,16 +21,6 @@
 	let sortedRepos = repos.toSorted(
 		(a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
 	);
-
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString);
-		return date.toLocaleDateString('en-US', {
-			weekday: 'long',
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric'
-		});
-	};
 </script>
 
 <section class="card bg-base-100 flex-[1.5] rounded-xl p-4 shadow-md">

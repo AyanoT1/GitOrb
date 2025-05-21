@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
 	import RepositoryList from '$lib/components/RepositoryList.svelte';
+	import StarList from '$lib/components/StarList.svelte';
 
 	export let data;
 </script>
@@ -17,8 +18,5 @@
 
 	<RepositoryList repos={data.repos} />
 
-	<section class="card bg-base-100 flex-1 rounded-xl p-4 shadow-md">
-		<h2 class="mb-4 px-2 text-xl font-semibold">Stars</h2>
-		<div class="text-base-content/50 py-10 text-center">Starred repositories will appear here</div>
-	</section>
+	<StarList stars={data.stars} />
 </main>
