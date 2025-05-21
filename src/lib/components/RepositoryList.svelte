@@ -1,14 +1,24 @@
 <script lang="ts">
-	export let repos: Array<{
+	interface Repo {
 		name: string;
 		owner: {
 			login: string;
 			avatar_url: string;
 		};
 		html_url: string;
-		description: string | null;
+		description: string | undefined;
 		updated_at: string;
-	}>;
+	}
+
+	interface Props {
+		repos: Repo[];
+	}
+
+	let { repos }: Props = $props();
+
+	let sortedRepos = repos.toSorted(
+		(a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+	);
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString);
@@ -19,10 +29,6 @@
 			year: 'numeric'
 		});
 	};
-
-	$: sortedRepos = [...repos].sort(
-		(a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-	);
 </script>
 
 <section class="card bg-base-100 flex-[1.5] rounded-xl p-4 shadow-md">
