@@ -1,10 +1,12 @@
-import { json, redirect, type RequestEvent } from '@sveltejs/kit';
+// src/routes/api/auth/callback/+server.ts
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
-
+import { randomUUID } from 'crypto';
+import { sessionStore } from '../../server/sessions/sessionStore';
 
 export async function GET({ url, fetch, cookies }: RequestEvent) {
 	const code = url.searchParams.get('code');
-	if (!code) return json({ error: 'Missing code' }, { status: 400 });
+	if (!code) throw redirect(302, '/error?message=Missing+OAuth+code');
 
 	const res = await fetch('https://github.com/login/oauth/access_token', {
 		method: 'POST',
@@ -20,13 +22,21 @@ export async function GET({ url, fetch, cookies }: RequestEvent) {
 	});
 
 	const data = await res.json();
+	if (data.error) throw redirect(302, `/error?message=${data.error_description}`);
 
-	if (data.error) return json({ error: data.error_description }, { status: 400 });
+	const sessionId = randomUUID();
 
-	cookies.set('github_token', data.access_token, {
+	sessionStore.set(sessionId, {
+		accessToken: data.access_token,
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 7
+	});
+
+	cookies.set('session_id', sessionId, {
 		path: '/',
 		httpOnly: true,
-		maxAge: 60 * 60 * 24 * 7
+		maxAge: 60 * 60 * 24 * 7,
+		sameSite: 'lax',
+		secure: true
 	});
 
 	throw redirect(302, '/dashboard');

@@ -1,28 +1,26 @@
 import { redirect } from '@sveltejs/kit';
+import { sessionStore } from '../api/server/sessions/sessionStore';
 
-export async function load({ cookies }) {
-	const token = cookies.get('github_token');
-	if (!token) throw redirect(302, '/api/auth/login');
+export async function load({ cookies, fetch }) {
+	const sessionId = cookies.get('session_id');
+	if (!sessionId) throw redirect(302, '/api/auth/login');
+
+	const session = sessionStore.get(sessionId);
+	if (!session) throw redirect(302, '/api/auth/login');
 
 	const headers = {
-		Authorization: `Bearer ${token}`,
+		Authorization: `Bearer ${session.accessToken}`,
 		Accept: 'application/vnd.github+json'
 	};
 
 	// Fetch user
 	const userRes = await fetch('https://api.github.com/user', { headers });
-	if (!userRes.ok) {
-		console.error('GitHub user fetch error', userRes.status);
-		throw new Error('Failed to fetch user');
-	}
+	if (!userRes.ok) throw new Error('Failed to fetch user');
 	const user = await userRes.json();
 
 	// Fetch repos
 	const reposRes = await fetch('https://api.github.com/user/repos', { headers });
-	if (!reposRes.ok) {
-		console.error('GitHub repos fetch error', reposRes.status);
-		throw new Error('Failed to fetch repositories');
-	}
+	if (!reposRes.ok) throw new Error('Failed to fetch repositories');
 	const repos = await reposRes.json();
 
 	// Fetch stars
@@ -30,7 +28,7 @@ export async function load({ cookies }) {
 	if (!starredRes.ok) throw new Error('Failed to fetch starred repositories');
 	const stars = await starredRes.json();
 
-	// Fetch issues and PR's
+	// Fetch issues and PRs
 	const issuesAndPRsRes = await fetch(
 		`https://api.github.com/search/issues?q=is:open+involves:${user.login}`,
 		{ headers }

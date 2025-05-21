@@ -5,7 +5,8 @@ export function GET() {
 	const params = new URLSearchParams({
 		client_id: GITHUB_CLIENT_ID,
 		scope: 'read:user repo',
-		redirect_uri: 'http://localhost:5173/api/auth/callback'
+		redirect_uri: 'http://localhost:5173/api/auth/callback',
+		prompt: 'consent'
 	});
 
 	throw redirect(302, `https://github.com/login/oauth/authorize?${params.toString()}`);
