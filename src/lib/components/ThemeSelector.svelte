@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	// List of available themes
 	const themes = [
 		'light',
 		'dark',
@@ -42,24 +41,19 @@
 
 	type Theme = (typeof themes)[number];
 
-	// Initialize theme from localStorage or use default
 	let currentTheme: Theme = 'light';
 
 	onMount(() => {
-		// Check for saved theme in localStorage
 		const savedTheme = localStorage.getItem('theme') as Theme | null;
 		if (savedTheme && themes.includes(savedTheme)) {
 			currentTheme = savedTheme;
 		} else {
-			// Check for system preference
 			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 			currentTheme = prefersDark ? 'dark' : 'light';
 		}
 
-		// Apply the theme
 		applyTheme(currentTheme);
 
-		// Add click handlers for all theme buttons
 		document.querySelectorAll('[data-set-theme]').forEach((button) => {
 			button.addEventListener('click', (e) => {
 				const target = e.currentTarget as HTMLElement;
@@ -72,14 +66,10 @@
 	});
 
 	function applyTheme(theme: Theme): void {
-		// Set the theme on the HTML element
 		document.documentElement.setAttribute('data-theme', theme);
-		// Save to localStorage
 		localStorage.setItem('theme', theme);
-		// Update currentTheme
 		currentTheme = theme;
 
-		// Update the checkmark visibility
 		document.querySelectorAll('[data-set-theme]').forEach((button) => {
 			const svg = button.querySelector('svg');
 			if (button.getAttribute('data-set-theme') === theme) {
