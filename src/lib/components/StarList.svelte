@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { formatDate } from "$lib/utils";
+	import { formatDate } from '$lib/utils';
 
 	interface Star {
 		name: string;
 		owner: { login: string; avatar_url: string; url: 'string' };
 		description: string | undefined;
 		html_url: string;
-        updated_at: string
+		updated_at: string;
 	}
 
 	interface Props {
@@ -16,7 +16,7 @@
 	let { stars }: Props = $props();
 </script>
 
-<section class="card bg-base-100 flex-1 rounded-xl p-4 shadow-md">
+<section class="card bg-base-100 col-span-3 rounded-xl p-4 shadow-md">
 	<h2 class="mb-4 px-2 text-xl font-semibold">Stars</h2>
 
 	<div id="stars" class="flex flex-col gap-3">

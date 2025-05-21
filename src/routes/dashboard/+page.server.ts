@@ -29,6 +29,14 @@ export async function load({ cookies }) {
 	const starredRes = await fetch('https://api.github.com/user/starred', { headers });
 	if (!starredRes.ok) throw new Error('Failed to fetch starred repositories');
 	const stars = await starredRes.json();
-	
-	return { user, repos, stars };
+
+	// Fetch issues and PR's
+	const issuesAndPRsRes = await fetch(
+		`https://api.github.com/search/issues?q=is:open+involves:${user.login}`,
+		{ headers }
+	);
+	if (!issuesAndPRsRes.ok) throw new Error('Failed to fetch issues and PRs');
+	const issues = (await issuesAndPRsRes.json()).items;
+
+	return { user, repos, stars, issues };
 }

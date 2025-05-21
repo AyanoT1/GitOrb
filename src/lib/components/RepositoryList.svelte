@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDate } from "$lib/utils";
+	import { formatDate } from '$lib/utils';
 
 	interface Repo {
 		name: string;
@@ -23,7 +23,7 @@
 	);
 </script>
 
-<section class="card bg-base-100 flex-[1.5] rounded-xl p-4 shadow-md">
+<section class="card bg-base-100 col-span-4 rounded-xl p-4 shadow-md">
 	<h1 class="mb-4 px-2 text-2xl font-semibold">Recent Repos</h1>
 	<div id="repos" class="flex flex-col gap-3">
 		{#each sortedRepos as repo}
@@ -39,18 +39,18 @@
 						</div>
 					</div>
 
-					<main class="flex w-full items-center justify-between">
-						<section>
-							<h2 class="text-lg font-bold">{repo.name}</h2>
+					<main class="flex w-full items-center justify-between gap-4">
+						<section class="min-w-0 flex-1 overflow-hidden">
+							<h2 class="truncate text-lg font-bold">{repo.name}</h2>
 							<p class="text-sm text-gray-500">by {repo.owner.login}</p>
 							{#if repo.description}
-								<p class="text-base-content/60 col-span-2 mt-1 text-xs">
+								<p class="text-base-content/60 mt-1 text-xs">
 									{repo.description}
 								</p>
 							{/if}
 						</section>
 
-						<section class="text-right">
+						<section class="shrink-0 text-right whitespace-nowrap">
 							<p class="text-sm text-gray-500">Last updated:</p>
 							<p class="text-xs text-gray-500">{formatDate(repo.updated_at)}</p>
 						</section>
