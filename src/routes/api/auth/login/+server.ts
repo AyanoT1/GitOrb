@@ -13,10 +13,14 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 		secure: true
 	});
 
+	const includePrivate = url.searchParams.get('private') === 'true';
+
 	const redirect_uri = `${PUBLIC_BASE_URL}/api/auth/callback`;
+	const scope = includePrivate ? 'read:user repo' : 'read:user public_repo';
+
 	const params = new URLSearchParams({
 		client_id: GITHUB_CLIENT_ID,
-		scope: 'read:user repo',
+		scope,
 		redirect_uri,
 		prompt: 'consent',
 		state

@@ -3,10 +3,10 @@ import { sessionStore } from '../api/server/sessions/sessionStore';
 
 export async function load({ cookies, fetch }) {
 	const sessionId = cookies.get('session_id');
-	if (!sessionId) throw redirect(302, '/api/auth/login');
+	if (!sessionId) throw redirect(302, '/login');
 
 	const session = sessionStore.get(sessionId);
-	if (!session) throw redirect(302, '/api/auth/login');
+	if (!session) throw redirect(302, '/login');
 
 	const headers = {
 		Authorization: `Bearer ${session.accessToken}`,
